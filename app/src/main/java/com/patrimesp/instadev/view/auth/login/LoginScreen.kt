@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,8 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aristidevs.instadev.view.auth.login.LoginViewModel
 import com.aristidevs.instadev.view.core.components.InstaButton
 import com.aristidevs.instadev.view.core.components.InstaButtonSecondary
@@ -36,8 +35,8 @@ import com.patrimesp.instadev.R
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = viewModel(),
-                navigateToRegister: () -> Unit
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToRegister: () -> Unit
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -80,7 +79,7 @@ fun LoginScreen(
                 InstaButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.login_screen_button_login),
-                    onClick = { },
+                    onClick = { loginViewModel.onClickSelected() },
                     enabled = uiState.isLoginEnabled && !uiState.isLoading,
                 )
 

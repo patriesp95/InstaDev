@@ -32,13 +32,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.aristidevs.instadev.view.core.components.InstaButtonSecondary
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
-    registerViewModel: RegisterViewModel = viewModel(),
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     navigateBack: () -> Unit
 ) {
     val uiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()

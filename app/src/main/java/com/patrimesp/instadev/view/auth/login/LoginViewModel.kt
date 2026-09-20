@@ -2,11 +2,19 @@ package com.aristidevs.instadev.view.auth.login
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.patrimesp.instadev.domain.usecase.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel: ViewModel() {
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
@@ -25,6 +33,12 @@ class LoginViewModel: ViewModel() {
             it.copy(password = password)
         }
         verifyLogin()
+    }
+
+    fun onClickSelected(){
+        viewModelScope.launch(Dispatchers.IO) {
+            loginUseCase(_uiState.value.email, _uiState.value.password)
+        }
     }
 
     private fun verifyLogin() {
