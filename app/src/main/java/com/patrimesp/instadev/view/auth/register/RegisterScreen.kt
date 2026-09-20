@@ -3,6 +3,7 @@ package com.patrimesp.instadev.view.auth.register
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +37,10 @@ import com.aristidevs.instadev.view.core.components.InstaButtonSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
+fun RegisterScreen(
+    registerViewModel: RegisterViewModel = viewModel(),
+    navigateBack: () -> Unit
+) {
     val uiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
 
     val title: String
@@ -70,7 +74,8 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
                      Icon(
                          imageVector = Icons.Default.ArrowBack,
                          contentDescription = "back",
-                         tint = MaterialTheme.colorScheme.onSurfaceVariant
+                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                         modifier = Modifier.clickable{navigateBack()}
                      )
                  }
              )
@@ -113,7 +118,7 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.register_screen_button_next),
                     enabled = uiState.isRegisterEnabled,
-                    onClick = {},
+                    onClick = { },
                 )
                 Spacer(Modifier.height(4.dp))
                 InstaButtonSecondary(
@@ -136,5 +141,7 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
 @Preview
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen()
+    RegisterScreen {
+
+    }
 }

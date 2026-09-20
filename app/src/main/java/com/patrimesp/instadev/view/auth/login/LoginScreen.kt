@@ -35,7 +35,10 @@ import com.patrimesp.instadev.R
 
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel = viewModel(),
+                navigateToRegister: () -> Unit
+) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold { padding ->
@@ -77,7 +80,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 InstaButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.login_screen_button_login),
-                    onClick = {  },
+                    onClick = { },
                     enabled = uiState.isLoginEnabled && !uiState.isLoading,
                 )
 
@@ -90,7 +93,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 Spacer(Modifier.weight(1.3f))
                 InstaButtonSecondary(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {  },
+                    onClick = { navigateToRegister() },
                     title = stringResource(R.string.login_screen_button_register)
                 )
                 Icon(
@@ -109,5 +112,5 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen { }
 }

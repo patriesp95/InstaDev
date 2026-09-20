@@ -1,4 +1,4 @@
-package com.aristidevs.instadev.view.core.navigation
+package com.patrimesp.instadev.view.core.navigation
 
 import kotlinx.serialization.Serializable
 
