@@ -1,5 +1,6 @@
 package com.patrimesp.instadev.view.auth.register
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -36,7 +37,27 @@ import com.aristidevs.instadev.view.core.components.InstaButtonSecondary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
-    val registerUiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
+    val uiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
+
+    val title: String
+    val subtitle: String
+    val label: String
+    val changeModeTitle: String
+
+    when(uiState.isPhoneMode){
+        true -> {
+            title = stringResource(R.string.register_screen_title_phone)
+            subtitle = stringResource(R.string.register_screen_subtitle_phone)
+            label = stringResource(R.string.register_screen_textfield_register_phone)
+            changeModeTitle = stringResource(R.string.register_screen_button_register_with_email)
+        }
+        false -> {
+            title = stringResource(R.string.register_screen_title_email)
+            subtitle = stringResource(R.string.register_screen_subtitle_email)
+            label = stringResource(R.string.register_screen_textfield_register_email)
+            changeModeTitle = stringResource(R.string.register_screen_button_register_with_phone)
+        }
+    }
 
     Scaffold(
          topBar = {
@@ -64,52 +85,41 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
                     .padding(horizontal = 16.dp)
                     .fillMaxSize(),
             ) {
-                InstaText(
-                    text = if (registerUiState.isEmailRegistryTapped)
-                        stringResource(R.string.register_screen_title_email) else
-                        stringResource(R.string.register_screen_title_phone),
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                AnimatedContent(title) { animatedTitle ->
+                    InstaText(
+                        text = animatedTitle,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Spacer(Modifier.height(4.dp))
                 InstaText(
-                    text = if (registerUiState.isEmailRegistryTapped)
-                        stringResource(R.string.register_screen_subtitle_email) else
-                            stringResource(R.string.register_screen_subtitle_phone),
+                    text = subtitle,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.height(16.dp))
                 InstaTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = registerUiState.phone,
-                    label = if (registerUiState.isEmailRegistryTapped)
-                        stringResource(R.string.register_screen_textfield_register_email) else
-                        stringResource(R.string.register_screen_textfield_register_phone),
-                    onValueChange = { registerViewModel.onPhoneChanged(it) })
+                    value = uiState.value,
+                    label = label,
+                    onValueChange = { registerViewModel.onRegisterChanged(it) })
                 Spacer(Modifier.height(12.dp))
                 InstaText(
-                    text = if (registerUiState.isEmailRegistryTapped)
-                        stringResource(R.string.register_screen_body_email) else
-                            stringResource(R.string.register_screen_body),
+                    text = stringResource(R.string.register_screen_body),
                 )
                 Spacer(Modifier.height(12.dp))
                 InstaButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.register_screen_button_next),
-                    onClick = {
-                        if (registerUiState.isEmailRegistryTapped)
-                        registerViewModel.onEmailRegistryButton() else
-                        registerViewModel.onPhoneRegistryButton()
-                              },
+                    enabled = uiState.isRegisterEnabled,
+                    onClick = {},
                 )
                 Spacer(Modifier.height(4.dp))
                 InstaButtonSecondary(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {  registerViewModel.onEmailRegistryButton() },
-                    title = if (registerUiState.isEmailRegistryTapped)
-                        stringResource(R.string.register_screen_button_register_with_phone) else
-                        stringResource(R.string.register_screen_button_register_with_email),
+                    onClick = {  registerViewModel.onChangeMode() },
+                    title = changeModeTitle,
                     titleColor = MaterialTheme.colorScheme.onBackground,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
                 )

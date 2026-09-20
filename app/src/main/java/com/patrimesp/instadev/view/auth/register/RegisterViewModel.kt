@@ -10,45 +10,26 @@ class RegisterViewModel: ViewModel() {
     val _registerUiState = MutableStateFlow(RegisterUiState())
     var registerUiState: StateFlow<RegisterUiState> = _registerUiState
 
-    fun onPhoneChanged(phone: String) {
+    fun onChangeMode() {
         _registerUiState.update { state ->
-            state.copy(phone = phone)
+            state.copy(isPhoneMode = !state.isPhoneMode, value = "")
         }
-        verifyRegistry()
     }
 
-    fun onEmailRegistryButton() {
+    fun onRegisterChanged(value: String) {
         _registerUiState.update { state ->
-            state.copy(isEmailRegistryTapped = true)
-        }
-        verifyRegistry()
-    }
+            val isEnabled = if (state.isPhoneMode) {
+                state.value.length == 9
+            } else {
+                Patterns.EMAIL_ADDRESS.matcher(value).matches()
+            }
 
-    fun onPhoneRegistryButton() {
-        _registerUiState.update { state ->
-            state.copy(isEmailRegistryTapped = false)
-        }
-        verifyRegistry()
-    }
-
-
-    private fun verifyRegistry() {
-        val enabledRegistry =
-            isPhoneValid(_registerUiState.value.phone) || isEmailValid(_registerUiState.value.email)
-        _registerUiState.update {
-            it.copy(isRegisterEnabled = enabledRegistry)
+            state.copy(isRegisterEnabled = isEnabled, value = value)
         }
     }
-
-    private fun isEmailValid(email: String): Boolean =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    private fun isPhoneValid(phone: String): Boolean = phone.length == 9
 }
-
 data class RegisterUiState(
-    val phone: String = "",
-    val email: String = "",
-    val isEmailRegistryTapped: Boolean = false,
+    val value: String = "",
+    val isPhoneMode: Boolean = true,
     val isRegisterEnabled: Boolean = false,
 )
