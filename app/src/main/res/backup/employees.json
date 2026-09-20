@@ -1,0 +1,26 @@
+[
+    {
+        "userId": "u123",
+        "name": "Aris Guimerá",
+        "nickname": "aristidevs",
+        "followers": 10432,
+        "following":["u456", "u789"],
+        "userType": 1
+    },
+    {
+        "userId": "u456",
+        "name": "Lucía Martínez",
+        "nickname": "lucia.mtz",
+        "followers": 870,
+        "following":["u123"],
+        "userType": 2
+    },
+    {
+        "userId": "u789",
+        "name": "Carlos López",
+        "nickname": "carlosdev",
+        "followers": 583,
+        "following":["u456"],
+        "userType": 3
+    }
+]
