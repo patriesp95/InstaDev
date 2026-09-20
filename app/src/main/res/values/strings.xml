@@ -14,6 +14,7 @@
     <string name="register_screen_subtitle_phone">Introduce tu número de móvil de contacto. Nadie lo verá en tu perfil.</string>
     <string name="register_screen_subtitle_email">Introduce tu correo electrónico. Nadie lo verá en tu perfil.</string>
     <string name="register_screen_body">Puede que recibas notificaciones nuestras en Whatsapp y por SMS por motivos de seguridad y para iniciar sesión.</string>
+    <string name="register_screen_body_email">También te enviaremos correos electrónicos. Puedes cancelar esta opción cuándo quieras. Más información.</string>
     <string name="register_screen_textfield_register_phone">Número de móvil</string>
     <string name="register_screen_textfield_register_email">Correo electrónico</string>
     <string name="register_screen_button_next">Siguiente</string>
